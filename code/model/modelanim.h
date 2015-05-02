@@ -57,6 +57,7 @@ enum EModelAnimationPosition {
  */
 struct queued_animation {
 	vec3d angle;
+	vec3d pos;
 	vec3d vel;
 	vec3d accel;
 	int start;
@@ -136,6 +137,50 @@ class triggered_rotation
 };
 
 extern SCP_vector<triggered_rotation> Triggered_rotations;
+
+class triggered_translation
+{
+private:
+	int start_sound;
+	int loop_sound;
+	int end_sound;
+	int current_snd;
+	int current_snd_index;
+	float snd_rad;
+	int obj_num;
+
+	int n_queue;
+	queued_animation queue[MAX_TRIGGERED_ANIMATIONS];
+	queued_animation queue_tmp[MAX_TRIGGERED_ANIMATIONS];
+
+public:
+	triggered_translation();
+	~triggered_translation();
+	void clear();
+
+	void start(queued_animation *q);
+	void set_to_initial(queued_animation *q);
+	void set_to_final(queued_animation *q);
+	void apply_trigger_positions(vec3d *submodel_positions);
+
+	void add_queue(queued_animation *new_queue, int dir);
+	void process_queue();
+
+	vec3d current_pos;
+	vec3d current_vel;
+	vec3d lin_accel;	// linear acceleration, 0 means instant
+	vec3d lin_vel;		// meters per second, hold this speed when lin_accel has pushed it to this
+	vec3d slow_pos;	// position that we should start to slow down
+	vec3d end_position;	// lock it in
+	vec3d direction;
+
+	int instance;		// which animation this is (for reversals)
+	bool has_started;	// animation has started playing
+	int end_time;		// time that we should stop
+	int start_time;		// the time the current animation started
+};
+
+extern SCP_vector<triggered_translation> Triggered_translations;
 
 // functions...
 
