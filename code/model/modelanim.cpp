@@ -18,6 +18,7 @@
 extern float flFrametime;
 
 SCP_vector<triggered_rotation> Triggered_rotations;
+SCP_vector<triggered_translation> Triggered_translations;
 
 char *Animation_type_names[MAX_TRIGGER_ANIMATION_TYPES] =
 {
