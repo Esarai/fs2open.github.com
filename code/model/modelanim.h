@@ -57,7 +57,7 @@ enum EModelAnimationPosition {
  */
 struct queued_animation {
 	vec3d angle;
-	vec3d pos;
+	vec3d delta_pos;
 	vec3d vel;
 	vec3d accel;
 	int start;
@@ -66,6 +66,7 @@ struct queued_animation {
 	int end_time;
 	int reverse_start;
 	bool absolute;
+	bool translate;
 	int type;
 	int subtype;
 	int instance;

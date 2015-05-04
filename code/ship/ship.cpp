@@ -3545,35 +3545,48 @@ int parse_ship_values(ship_info* sip, bool first_time, bool replace)
 
 						if(optional_string("+absolute_angle:")){
 							current_trigger->absolute = true;
+							current_trigger->translate = false;
 							stuff_vec3d(&current_trigger->angle );
 		
 							current_trigger->angle.xyz.x = fl_radians(current_trigger->angle.xyz.x);
 							current_trigger->angle.xyz.y = fl_radians(current_trigger->angle.xyz.y);
 							current_trigger->angle.xyz.z = fl_radians(current_trigger->angle.xyz.z);
-						}else{
+						}else if(optional_string("+relative_angle:")){
 							current_trigger->absolute = false;
-							if(!optional_string("+relative_angle:"))
-								required_string("+relative_angle:");
+							current_trigger->translate = false;
+							required_string("+relative_angle:");
 
 							stuff_vec3d(&current_trigger->angle );
 		
 							current_trigger->angle.xyz.x = fl_radians(current_trigger->angle.xyz.x);
 							current_trigger->angle.xyz.y = fl_radians(current_trigger->angle.xyz.y);
 							current_trigger->angle.xyz.z = fl_radians(current_trigger->angle.xyz.z);
+						}else if(optional_string("+delta_pos:")){
+							current_trigger->translate = true;
+							stuff_vec3d(&current_trigger->delta_pos);
 						}
 		
 						if(optional_string("+velocity:")){
-							stuff_vec3d(&current_trigger->vel );
-							current_trigger->vel.xyz.x = fl_radians(current_trigger->vel.xyz.x);
-							current_trigger->vel.xyz.y = fl_radians(current_trigger->vel.xyz.y);
-							current_trigger->vel.xyz.z = fl_radians(current_trigger->vel.xyz.z);
+							if (current_trigger->translate != true){
+								stuff_vec3d(&current_trigger->vel);
+								current_trigger->vel.xyz.x = fl_radians(current_trigger->vel.xyz.x);
+								current_trigger->vel.xyz.y = fl_radians(current_trigger->vel.xyz.y);
+								current_trigger->vel.xyz.z = fl_radians(current_trigger->vel.xyz.z);
+							}else{
+								stuff_vec3d(&current_trigger->vel);
+							}
 						}
-		
+
 						if(optional_string("+acceleration:")){
-							stuff_vec3d(&current_trigger->accel );
-							current_trigger->accel.xyz.x = fl_radians(current_trigger->accel.xyz.x);
-							current_trigger->accel.xyz.y = fl_radians(current_trigger->accel.xyz.y);
-							current_trigger->accel.xyz.z = fl_radians(current_trigger->accel.xyz.z);
+							if (current_trigger->translate != true){
+								stuff_vec3d(&current_trigger->accel);
+								current_trigger->accel.xyz.x = fl_radians(current_trigger->accel.xyz.x);
+								current_trigger->accel.xyz.y = fl_radians(current_trigger->accel.xyz.y);
+								current_trigger->accel.xyz.z = fl_radians(current_trigger->accel.xyz.z);
+							}
+							else{
+								stuff_vec3d(&current_trigger->accel);
+							}
 						}
 
 						if(optional_string("+time:"))
@@ -3594,32 +3607,47 @@ int parse_ship_values(ship_info* sip, bool first_time, bool replace)
 		
 						if(optional_string("+absolute_angle:")){
 							current_trigger->absolute = true;
+							current_trigger->translate = false;
 							stuff_vec3d(&current_trigger->angle );
 		
 							current_trigger->angle.xyz.x = fl_radians(current_trigger->angle.xyz.x);
 							current_trigger->angle.xyz.y = fl_radians(current_trigger->angle.xyz.y);
 							current_trigger->angle.xyz.z = fl_radians(current_trigger->angle.xyz.z);
-						}else{
+						}else if(optional_string("+relative_angle:")){
 							current_trigger->absolute = false;
+							current_trigger->translate = false;
 							required_string("+relative_angle:");
 							stuff_vec3d(&current_trigger->angle );
 		
 							current_trigger->angle.xyz.x = fl_radians(current_trigger->angle.xyz.x);
 							current_trigger->angle.xyz.y = fl_radians(current_trigger->angle.xyz.y);
 							current_trigger->angle.xyz.z = fl_radians(current_trigger->angle.xyz.z);
+						}else if(optional_string("+delta_pos:")){
+							current_trigger->translate = true;
+							stuff_vec3d(&current_trigger->delta_pos);
 						}
 		
 						required_string("+velocity:");
-						stuff_vec3d(&current_trigger->vel );
-						current_trigger->vel.xyz.x = fl_radians(current_trigger->vel.xyz.x);
-						current_trigger->vel.xyz.y = fl_radians(current_trigger->vel.xyz.y);
-						current_trigger->vel.xyz.z = fl_radians(current_trigger->vel.xyz.z);
+						if (current_trigger->translate != true){
+							stuff_vec3d(&current_trigger->vel);
+							current_trigger->vel.xyz.x = fl_radians(current_trigger->vel.xyz.x);
+							current_trigger->vel.xyz.y = fl_radians(current_trigger->vel.xyz.y);
+							current_trigger->vel.xyz.z = fl_radians(current_trigger->vel.xyz.z);
+						}
+						else{
+							stuff_vec3d(&current_trigger->vel);
+						}
 		
 						if (optional_string("+acceleration:")){
-							stuff_vec3d(&current_trigger->accel );
-							current_trigger->accel.xyz.x = fl_radians(current_trigger->accel.xyz.x);
-							current_trigger->accel.xyz.y = fl_radians(current_trigger->accel.xyz.y);
-							current_trigger->accel.xyz.z = fl_radians(current_trigger->accel.xyz.z);
+							if (current_trigger->translate != true){
+								stuff_vec3d(&current_trigger->accel);
+								current_trigger->accel.xyz.x = fl_radians(current_trigger->accel.xyz.x);
+								current_trigger->accel.xyz.y = fl_radians(current_trigger->accel.xyz.y);
+								current_trigger->accel.xyz.z = fl_radians(current_trigger->accel.xyz.z);
+							}
+							else{
+								stuff_vec3d(&current_trigger->accel);
+							}
 						} else {
 							current_trigger->accel.xyz.x = 0.0f;
 							current_trigger->accel.xyz.y = 0.0f;
